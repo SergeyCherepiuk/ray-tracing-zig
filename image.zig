@@ -6,10 +6,7 @@ pub const Image = struct {
     height: u64,
     pixels: []Pixel,
 
-    pub fn random() !Image {
-        const width: u64 = @as(u64, rng.random().int(u8)) + 100; // [100, 355]
-        const height: u64 = @as(u64, rng.random().int(u8)) + 100; // [100, 355]
-
+    pub fn random(width: u64, height: u64) !Image {
         const allocator = std.heap.page_allocator;
         var pixels = try allocator.alloc(Pixel, width * height);
         var i: u64 = 0;

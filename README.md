@@ -9,7 +9,7 @@ Generating random set of pixels and saving them to the `.ppm` format.
 Run the following command to generate an image:
 
 ```bash
-$ zig run main.zig 2> assets/image.ppm
+$ zig run main.zig > assets/image.ppm
 ```
 
 ![Generated image](./assets/image-converted.png)
