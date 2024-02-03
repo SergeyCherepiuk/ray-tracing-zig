@@ -1,10 +1,10 @@
 # Ray tracing
 
-Graphical library for generating 2D images from 3D scenes.
+Graphics library for generating 2D images from 3D scenes.
 
 ## Current state
 
-Generating random set of pixels and saving them to the `.ppm` format.
+Rendering the sphere (yes, it's a sphere). No source of light yet being added, so objects do not cast shadows.
 
 Run the following command to generate an image:
 
@@ -12,4 +12,4 @@ Run the following command to generate an image:
 $ zig run src/main.zig > assets/image.ppm
 ```
 
-![Generated image](./assets/image-converted.png)
+![Generated image of a sphere](./assets/image-converted.png)
