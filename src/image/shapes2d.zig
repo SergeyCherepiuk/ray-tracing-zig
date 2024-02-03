@@ -23,7 +23,7 @@ pub fn circle(width: u16, height: u16, radius: u16) !image.Image {
             const xsq = @as(usize, @intCast(std.math.pow(isize, x, 2)));
 
             const inside = xsq + ysq < rsq;
-            img.pixels[i * height + j] = if (inside)
+            img.pixels[i * width + j] = if (inside)
                 image.Pixel{ .R = 255, .G = 64, .B = 64 }
             else
                 image.Pixel{ .R = 255, .G = 255, .B = 255 };
