@@ -12,9 +12,9 @@ pub fn sphere(width: u16, height: u16, sphere_radius: f64) !image.Image {
     };
 
     const sphere_position = vec3.zero;
-    const camera_position = vec3.Vec3{ .z = -20 };
+    const camera_position = vec3.Vec3{ .z = -100 };
     const camera_sphere_distance = sphere_position.sub(camera_position);
-    const focal_distance: f64 = 25.0;
+    const focal_distance: f64 = 50.0;
 
     const screen_center = camera_position.add(
         vec3.forward.mulScalar(focal_distance),
