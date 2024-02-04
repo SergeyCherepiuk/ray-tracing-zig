@@ -3,6 +3,7 @@ const image = @import("../image/image.zig");
 const vec3 = @import("../vec3/vec3.zig");
 const Sphere = @import("../shapes/sphere.zig").Sphere;
 const Ray = @import("../ray/ray.zig").Ray;
+const hitColor = @import("../hitable/hitable.zig").hitColor;
 
 const allocator = std.heap.page_allocator;
 const spheres = [_]Sphere{
@@ -12,7 +13,7 @@ const spheres = [_]Sphere{
         .color = image.Color{ .R = 255 },
     },
     Sphere{
-        .position = vec3.Vec3{ .y = 150 },
+        .position = vec3.Vec3{ .z = -30 },
         .radius = 35.0,
         .color = image.Color{ .G = 255 },
     },
@@ -57,9 +58,7 @@ pub fn spheresExample() !image.Image {
                 .direction = pixel_position.sub(camera_position),
             };
 
-            img.pixels[i * width + j] = for (spheres) |sphere| {
-                if (ray.intersects(sphere)) break sphere.color;
-            } else image.Color{ .R = 255, .G = 255, .B = 255 };
+            img.pixels[i * width + j] = hitColor(ray, &spheres);
         }
     }
 
