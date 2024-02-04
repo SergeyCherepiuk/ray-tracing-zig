@@ -56,10 +56,10 @@ pub const Vec3 = struct {
     }
 
     pub fn length(self: Vec3) f64 {
-        const x2 = self.x * self.x;
-        const y2 = self.y * self.y;
-        const z2 = self.z * self.z;
-        return std.math.sqrt(x2 + y2 + z2);
+        const xsq = self.x * self.x;
+        const ysq = self.y * self.y;
+        const zsq = self.z * self.z;
+        return std.math.sqrt(xsq + ysq + zsq);
     }
 
     pub fn normalize(self: Vec3) Vec3 {
