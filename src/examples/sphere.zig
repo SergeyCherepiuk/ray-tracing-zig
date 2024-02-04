@@ -5,15 +5,32 @@ const Sphere = @import("../shapes/sphere.zig").Sphere;
 const Ray = @import("../ray/ray.zig").Ray;
 
 const allocator = std.heap.page_allocator;
+const spheres = [_]Sphere{
+    Sphere{
+        .position = vec3.Vec3{ .x = -50 },
+        .radius = 50.0,
+        .color = image.Color{ .R = 255 },
+    },
+    Sphere{
+        .position = vec3.Vec3{ .y = 150 },
+        .radius = 35.0,
+        .color = image.Color{ .G = 255 },
+    },
+    Sphere{
+        .position = vec3.Vec3{ .x = 200, .z = -50 },
+        .radius = 100.0,
+        .color = image.Color{ .B = 255 },
+    },
+};
 
-pub fn sphereExample() !image.Image {
+pub fn spheresExample() !image.Image {
     const width: u64 = 300;
     const height: u64 = 300;
 
     const img = image.Image{
         .width = width,
         .height = height,
-        .pixels = try allocator.alloc(image.Pixel, @as(u32, width) * height),
+        .pixels = try allocator.alloc(image.Color, @as(u32, width) * height),
     };
 
     const camera_position = vec3.Vec3{ .z = 100 };
@@ -22,8 +39,6 @@ pub fn sphereExample() !image.Image {
     const screen_center = camera_position.add(
         vec3.forward.mulScalar(focal_distance),
     );
-
-    const sphere = Sphere{ .position = vec3.zero, .radius = 50.0 };
 
     var i: usize = 0;
     while (i < height) : (i += 1) {
@@ -42,10 +57,9 @@ pub fn sphereExample() !image.Image {
                 .direction = pixel_position.sub(camera_position),
             };
 
-            img.pixels[i * width + j] = if (ray.intersects(sphere))
-                image.Pixel{ .R = 255, .G = 64, .B = 64 }
-            else
-                image.Pixel{ .R = 255, .G = 255, .B = 255 };
+            img.pixels[i * width + j] = for (spheres) |sphere| {
+                if (ray.intersects(sphere)) break sphere.color;
+            } else image.Color{ .R = 255, .G = 255, .B = 255 };
         }
     }
 
