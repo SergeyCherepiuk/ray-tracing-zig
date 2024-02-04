@@ -1,5 +1,5 @@
 const std = @import("std");
-const image = @import("image.zig");
+const Image = @import("image.zig").Image;
 
 /// Size of a single pixel record in bits. The size includes padding (if applicable)
 /// and a new line character for each record.
@@ -10,7 +10,7 @@ pub const FormatError = error{
     NoSpaceLeft,
 };
 
-pub fn format(img: image.Image) FormatError![]const u8 {
+pub fn format(img: Image) FormatError![]const u8 {
     const allocator = std.heap.page_allocator;
 
     const header: []const u8 = try std.fmt.allocPrint(

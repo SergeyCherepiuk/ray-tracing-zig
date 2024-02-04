@@ -1,7 +1,8 @@
 const std = @import("std");
-const image = @import("../image/image.zig");
+const Image = @import("../image/image.zig").Image;
+const Color = @import("../image/color.zig").Color;
 const vec3 = @import("../vec3/vec3.zig");
-const Sphere = @import("../shapes/sphere.zig").Sphere;
+const Sphere = @import("../objects/sphere.zig").Sphere;
 const Ray = @import("../ray/ray.zig").Ray;
 const hitColor = @import("../hitable/hitable.zig").hitColor;
 
@@ -10,28 +11,28 @@ const spheres = [_]Sphere{
     Sphere{
         .position = vec3.Vec3{ .x = -50 },
         .radius = 50.0,
-        .color = image.Color{ .R = 255 },
+        .color = Color{ .R = 255 },
     },
     Sphere{
         .position = vec3.Vec3{ .z = -30 },
         .radius = 35.0,
-        .color = image.Color{ .G = 255 },
+        .color = Color{ .G = 255 },
     },
     Sphere{
         .position = vec3.Vec3{ .x = 200, .z = -50 },
         .radius = 100.0,
-        .color = image.Color{ .B = 255 },
+        .color = Color{ .B = 255 },
     },
 };
 
-pub fn spheresExample() !image.Image {
+pub fn spheresExample() !Image {
     const width: u64 = 300;
     const height: u64 = 300;
 
-    const img = image.Image{
+    const img = Image{
         .width = width,
         .height = height,
-        .pixels = try allocator.alloc(image.Color, @as(u32, width) * height),
+        .pixels = try allocator.alloc(Color, @as(u32, width) * height),
     };
 
     const camera_position = vec3.Vec3{ .z = 100 };

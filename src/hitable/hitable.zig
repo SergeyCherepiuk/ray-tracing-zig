@@ -1,7 +1,7 @@
 const std = @import("std");
 const Ray = @import("../ray/ray.zig").Ray;
-const Sphere = @import("../shapes/sphere.zig").Sphere;
-const Color = @import("../image/image.zig").Color;
+const Sphere = @import("../objects/sphere.zig").Sphere;
+const Color = @import("../image/color.zig").Color;
 
 pub fn hitColor(ray: Ray, spheres: []const Sphere) Color {
     var min_hit_distance: f64 = std.math.floatMax(f64);
