@@ -25,13 +25,14 @@ pub fn hitColor(
     }
 
     return if (closest_hit) |hit| {
-        return lightImpact(hit.sphere, hit.point, spheres, lights);
+        return lightImpact(hit.sphere, hit.point, ray.direction, spheres, lights);
     } else Color{};
 }
 
 fn lightImpact(
     sphere: objects.Sphere,
     hit_point: Vec3,
+    ray_direction: Vec3,
     spheres: []const objects.Sphere,
     lights: []const objects.Light,
 ) Color {
@@ -40,17 +41,16 @@ fn lightImpact(
     outer: for (lights) |light| {
         const to_light = light.position.sub(hit_point).normalize();
 
-        const ray = Ray{ .origin = &hit_point, .direction = to_light };
+        const ray_to_light = Ray{ .origin = &hit_point, .direction = to_light };
         for (spheres) |other_sphere| {
             if (other_sphere.equals(sphere)) continue;
-            if (blocked(ray, light, sphere, other_sphere)) continue :outer;
+            if (blocked(ray_to_light, light, sphere, other_sphere)) continue :outer;
         }
 
         const normal = sphere.position.sub(hit_point).mulScalar(-1).normalize();
-        const light_directness = to_light.dot(normal);
-        if (light_directness <= 0.0) continue;
-
-        result_color = sphere.color.add(light.color.scale(light_directness));
+        result_color = result_color
+            .add(diffuse(light, to_light, normal))
+            .add(specular(light, to_light, normal, ray_direction));
     }
 
     return result_color;
@@ -67,4 +67,27 @@ fn blocked(
         const sphere_to_light = light.position.sub(sphere.position);
         return other_sphere_to_light.length() < sphere_to_light.length();
     } else false;
+}
+
+fn diffuse(light: objects.Light, to_light: Vec3, normal: Vec3) Color {
+    const light_directness = to_light.dot(normal);
+    return if (light_directness > 0.0) {
+        return light.color.scale(light_directness);
+    } else Color{};
+}
+
+fn specular(light: objects.Light, to_light: Vec3, normal: Vec3, ray_direction: Vec3) Color {
+    const light_directness = to_light.dot(normal);
+    if (light_directness <= 0) return Color{};
+
+    const specular_exponent = 50;
+    var specular_coefficient = normal
+        .mulScalar(2.0 * light_directness)
+        .sub(to_light)
+        .dot(ray_direction.normalize());
+    specular_coefficient = std.math.pow(f64, specular_coefficient, specular_exponent);
+
+    return if (specular_coefficient > 0.0) {
+        return light.color.scale(specular_coefficient);
+    } else Color{};
 }
