@@ -1,9 +1,9 @@
 const std = @import("std");
-const spheresExample = @import("examples/sphere.zig").spheresExample;
+const spheresScene = @import("scenes/spheres.zig").spheresScene;
 const ppm = @import("ppm.zig");
 
 pub fn main() !void {
-    const img = try spheresExample();
+    const img = try spheresScene();
     const formated = try ppm.format(img);
     _ = try std.io.getStdOut().write(formated);
 }

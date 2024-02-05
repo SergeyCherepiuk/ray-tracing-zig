@@ -50,11 +50,7 @@ fn lightImpact(
         const light_directness = to_light.dot(normal);
         if (light_directness <= 0.0) continue;
 
-        result_color = Color{
-            .R = @min(result_color.R + @as(u64, @intFromFloat(@as(f64, @floatFromInt(light.color.R)) * light_directness)), 255),
-            .G = @min(result_color.G + @as(u64, @intFromFloat(@as(f64, @floatFromInt(light.color.G)) * light_directness)), 255),
-            .B = @min(result_color.B + @as(u64, @intFromFloat(@as(f64, @floatFromInt(light.color.B)) * light_directness)), 255),
-        };
+        result_color = sphere.color.add(light.color.scale(light_directness));
     }
 
     return result_color;

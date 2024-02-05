@@ -3,7 +3,7 @@ const Image = @import("image.zig").Image;
 
 /// Size of a single pixel record in bits. The size includes padding (if applicable)
 /// and a new line character for each record.
-const PIXEL_RECORD_SIZE = 12;
+const PixelRecordSize = 12;
 
 pub const FormatError = error{
     OutOfMemory,
@@ -19,18 +19,18 @@ pub fn format(img: Image) FormatError![]const u8 {
         .{ img.width, img.height },
     );
 
-    const content_size = img.height * img.width * PIXEL_RECORD_SIZE;
+    const content_size = img.height * img.width * PixelRecordSize;
     const content: []u8 = try allocator.alloc(u8, content_size);
 
     for (img.pixels, 0..) |pixel, i| {
         const record = try std.fmt.bufPrint(
-            try allocator.alloc(u8, PIXEL_RECORD_SIZE),
+            try allocator.alloc(u8, PixelRecordSize),
             "{d:3} {d:3} {d:3}\n",
             .{ pixel.R, pixel.G, pixel.B },
         );
 
-        const start = i * PIXEL_RECORD_SIZE;
-        const end = start + PIXEL_RECORD_SIZE;
+        const start = i * PixelRecordSize;
+        const end = start + PixelRecordSize;
         std.mem.copy(u8, content[start..end], record);
     }
 

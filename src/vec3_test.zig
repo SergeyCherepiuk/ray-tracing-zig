@@ -95,22 +95,26 @@ test "vector length" {
     try expect(equal);
 }
 
-test "vectors equality (equal)" {
+test "vectors equality (same)" {
     const v1 = vec3.Vec3{ .x = 1.2, .y = 3.4, .z = 5.6 };
     const v2 = vec3.Vec3{ .x = 1.2, .y = 3.4, .z = 5.6 };
-
-    const actual = v1.equals(v2);
-    const expected = true;
-
-    try expect(actual == expected);
+    try expect(v1.equals(v2));
 }
 
-test "vectors equality (not equal)" {
+test "vectors equality (different x)" {
     const v1 = vec3.Vec3{ .x = 1.2, .y = 3.4, .z = 5.6 };
-    const v2 = vec3.Vec3{ .x = 0.0, .y = 3.4, .z = 5.6 };
+    const v2 = vec3.Vec3{ .x = 2.4, .y = 3.4, .z = 5.6 };
+    try expect(!v1.equals(v2));
+}
 
-    const actual = v1.equals(v2);
-    const expected = false;
+test "vectors equality (different y)" {
+    const v1 = vec3.Vec3{ .x = 1.2, .y = 3.4, .z = 5.6 };
+    const v2 = vec3.Vec3{ .x = 1.2, .y = 6.8, .z = 5.6 };
+    try expect(!v1.equals(v2));
+}
 
-    try expect(actual == expected);
+test "vectors equality (different z)" {
+    const v1 = vec3.Vec3{ .x = 1.2, .y = 3.4, .z = 5.6 };
+    const v2 = vec3.Vec3{ .x = 1.2, .y = 3.4, .z = 11.2 };
+    try expect(!v1.equals(v2));
 }

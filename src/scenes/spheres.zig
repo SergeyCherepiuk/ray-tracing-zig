@@ -41,7 +41,7 @@ const lights = [_]objects.Light{
     },
 };
 
-pub fn spheresExample() !image.Image {
+pub fn spheresScene() !image.Image {
     const width: u64 = 2000;
     const height: u64 = 1000;
 

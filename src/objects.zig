@@ -19,7 +19,4 @@ pub const Sphere = struct {
     }
 };
 
-pub const Light = struct {
-    position: Vec3,
-    color: Color,
-};
+pub const Light = struct { position: Vec3, color: Color };
