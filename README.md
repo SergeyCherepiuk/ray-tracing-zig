@@ -4,7 +4,7 @@ Graphics library for generating 2D images from 3D scenes.
 
 ## Current state
 
-Rendering several illuminated spheres painted in different colors.
+Rendering several illuminated spheres painted in different colors. The light might be blocked by other spheres, resulting in a shadow.
 
 Run the following command to generate an image:
 
@@ -12,4 +12,4 @@ Run the following command to generate an image:
 $ zig run src/main.zig > assets/image.ppm
 ```
 
-![Generated image of the spheres](./assets/image-converted.png)
+![Generated image of the spheres](./assets/image-converted.jpg)

@@ -25,20 +25,27 @@ pub fn hitColor(
     }
 
     return if (closest_hit) |hit| {
-        return lightImpact(hit.sphere, hit.point, lights);
+        return lightImpact(hit.sphere, hit.point, spheres, lights);
     } else Color{};
 }
 
-// TODO: Implement light to be blocked by another sphere
 fn lightImpact(
     sphere: objects.Sphere,
     hit_point: Vec3,
+    spheres: []const objects.Sphere,
     lights: []const objects.Light,
 ) Color {
     var result_color = sphere.color;
 
-    for (lights) |light| {
+    outer: for (lights) |light| {
         const to_light = light.position.sub(hit_point).normalize();
+
+        const ray = Ray{ .origin = &hit_point, .direction = to_light };
+        for (spheres) |other_sphere| {
+            if (other_sphere.equals(sphere)) continue;
+            if (blocked(ray, light, sphere, other_sphere)) continue :outer;
+        }
+
         const normal = sphere.position.sub(hit_point).mulScalar(-1).normalize();
         const light_directness = to_light.dot(normal);
         if (light_directness <= 0.0) continue;
@@ -51,4 +58,17 @@ fn lightImpact(
     }
 
     return result_color;
+}
+
+fn blocked(
+    ray: Ray,
+    light: objects.Light,
+    sphere: objects.Sphere,
+    other_sphere: objects.Sphere,
+) bool {
+    return if (ray.intersects(other_sphere)) |_| {
+        const other_sphere_to_light = light.position.sub(other_sphere.position);
+        const sphere_to_light = light.position.sub(sphere.position);
+        return other_sphere_to_light.length() < sphere_to_light.length();
+    } else false;
 }

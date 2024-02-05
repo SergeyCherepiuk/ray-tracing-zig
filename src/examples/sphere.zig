@@ -11,7 +11,7 @@ const spheres = [_]objects.Sphere{
     objects.Sphere{
         .position = vec3.Vec3{ .x = -700 },
         .radius = 150.0,
-        .color = image.Color{ .G = 92 },
+        .color = image.Color{ .G = 92, .B = 48 },
     },
     objects.Sphere{
         .position = vec3.zero,
@@ -19,20 +19,25 @@ const spheres = [_]objects.Sphere{
         .color = image.Color{ .R = 92 },
     },
     objects.Sphere{
+        .position = vec3.Vec3{ .x = 100, .y = 500, .z = -20 },
+        .radius = 50.0,
+        .color = image.Color{ .R = 92, .G = 92 },
+    },
+    objects.Sphere{
         .position = vec3.Vec3{ .x = 700 },
         .radius = 250.0,
-        .color = image.Color{ .B = 92 },
+        .color = image.Color{ .R = 48, .B = 92 },
     },
 };
 
 const lights = [_]objects.Light{
     objects.Light{
-        .position = vec3.Vec3{ .x = 300, .y = 1000, .z = -750 },
-        .color = image.Color{ .R = 192, .B = 192 },
-    },
-    objects.Light{
         .position = vec3.Vec3{ .x = -500, .y = -300, .z = -200 },
         .color = image.Color{ .G = 192 },
+    },
+    objects.Light{
+        .position = vec3.Vec3{ .x = 1000, .y = 1000, .z = -500 },
+        .color = image.Color{ .R = 172, .B = 128 },
     },
 };
 
