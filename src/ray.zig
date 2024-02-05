@@ -1,6 +1,6 @@
 const std = @import("std");
-const Vec3 = @import("../vec3/vec3.zig").Vec3;
-const Sphere = @import("../objects/sphere.zig").Sphere;
+const Vec3 = @import("vec3.zig").Vec3;
+const Sphere = @import("objects.zig").Sphere;
 
 pub const Ray = struct {
     origin: *const Vec3,
@@ -15,7 +15,7 @@ pub const Ray = struct {
         const d = b * b - 4.0 * a * c;
         if (d < 0.0) return null;
 
-        const t = (-b - std.math.sqrt(d)) / 2.0 * a;
-        return self.direction.mulScalar(t);
+        const t = (-b - std.math.sqrt(d)) / (2.0 * a);
+        return self.origin.*.add(self.direction.mulScalar(-t));
     }
 };

@@ -4,7 +4,7 @@ Graphics library for generating 2D images from 3D scenes.
 
 ## Current state
 
-Rendering several overlapping spheres (yes, these are spheres, not circles) painted in different colors. No source of light yet being added, so objects do not cast shadows.
+Rendering several illuminated spheres painted in different colors.
 
 Run the following command to generate an image:
 

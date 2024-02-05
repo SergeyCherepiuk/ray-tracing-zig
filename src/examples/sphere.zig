@@ -1,42 +1,53 @@
 const std = @import("std");
-const Image = @import("../image/image.zig").Image;
-const Color = @import("../image/color.zig").Color;
-const vec3 = @import("../vec3/vec3.zig");
-const Sphere = @import("../objects/sphere.zig").Sphere;
-const Ray = @import("../ray/ray.zig").Ray;
-const hitColor = @import("../hitable/hitable.zig").hitColor;
+const image = @import("../image.zig");
+const vec3 = @import("../vec3.zig");
+const objects = @import("../objects.zig");
+const Ray = @import("../ray.zig").Ray;
+const hitColor = @import("../hitable.zig").hitColor;
 
 const allocator = std.heap.page_allocator;
-const spheres = [_]Sphere{
-    Sphere{
-        .position = vec3.Vec3{ .x = -50 },
-        .radius = 50.0,
-        .color = Color{ .R = 255 },
+
+const spheres = [_]objects.Sphere{
+    objects.Sphere{
+        .position = vec3.Vec3{ .x = -700 },
+        .radius = 150.0,
+        .color = image.Color{ .G = 92 },
     },
-    Sphere{
-        .position = vec3.Vec3{ .z = -30 },
-        .radius = 35.0,
-        .color = Color{ .G = 255 },
+    objects.Sphere{
+        .position = vec3.zero,
+        .radius = 400.0,
+        .color = image.Color{ .R = 92 },
     },
-    Sphere{
-        .position = vec3.Vec3{ .x = 200, .z = -50 },
-        .radius = 100.0,
-        .color = Color{ .B = 255 },
+    objects.Sphere{
+        .position = vec3.Vec3{ .x = 700 },
+        .radius = 250.0,
+        .color = image.Color{ .B = 92 },
     },
 };
 
-pub fn spheresExample() !Image {
-    const width: u64 = 300;
-    const height: u64 = 300;
+const lights = [_]objects.Light{
+    objects.Light{
+        .position = vec3.Vec3{ .x = 300, .y = 1000, .z = -750 },
+        .color = image.Color{ .R = 192, .B = 192 },
+    },
+    objects.Light{
+        .position = vec3.Vec3{ .x = -500, .y = -300, .z = -200 },
+        .color = image.Color{ .G = 192 },
+    },
+};
 
-    const img = Image{
+pub fn spheresExample() !image.Image {
+    const width: u64 = 2000;
+    const height: u64 = 1000;
+
+    const img = image.Image{
         .width = width,
         .height = height,
-        .pixels = try allocator.alloc(Color, @as(u32, width) * height),
+        .pixels = try allocator.alloc(image.Color, @as(u32, width) * height),
     };
 
-    const camera_position = vec3.Vec3{ .z = 100 };
-    const focal_distance: f64 = 50.0;
+    const camera_position = vec3.Vec3{ .z = -2000 };
+    const focal_distance: f64 = 1500;
 
     const screen_center = camera_position.add(
         vec3.forward.mulScalar(focal_distance),
@@ -51,7 +62,7 @@ pub fn spheresExample() !Image {
             const x = @as(isize, @intCast(j)) - @divFloor(width, 2);
 
             const pixel_position = screen_center
-                .add(vec3.up.mulScalar(@floatFromInt(y)))
+                .add(vec3.up.mulScalar(-@as(f64, @floatFromInt(y))))
                 .add(vec3.right.mulScalar(@floatFromInt(x)));
 
             const ray = Ray{
@@ -59,7 +70,7 @@ pub fn spheresExample() !Image {
                 .direction = pixel_position.sub(camera_position),
             };
 
-            img.pixels[i * width + j] = hitColor(ray, &spheres);
+            img.pixels[i * width + j] = hitColor(ray, &spheres, &lights);
         }
     }
 
