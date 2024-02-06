@@ -1,7 +1,5 @@
 const std = @import("std");
 
-var rng = std.rand.DefaultPrng.init(0);
-
 pub const Image = struct { width: u64, height: u64, pixels: []Color };
 
 pub const Color = struct {

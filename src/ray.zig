@@ -15,7 +15,17 @@ pub const Ray = struct {
         const d = b * b - 4.0 * a * c;
         if (d < 0.0) return null;
 
-        const t = (-b - std.math.sqrt(d)) / (2.0 * a);
-        return self.origin.*.add(self.direction.mulScalar(-t));
+        const t0 = (-b - std.math.sqrt(d)) / (2.0 * a);
+        const t1 = (-b + std.math.sqrt(d)) / (2.0 * a);
+
+        // TODO: Approach used from this line of code up until
+        // the end of the function is quite inefficient
+        const p0 = self.direction.mulScalar(-t0).add(self.origin.*);
+        const p1 = self.direction.mulScalar(-t1).add(self.origin.*);
+
+        const l0 = p0.sub(self.origin.*).length();
+        const l1 = p1.sub(self.origin.*).length();
+
+        return if (l0 < l1) p0 else p1;
     }
 };

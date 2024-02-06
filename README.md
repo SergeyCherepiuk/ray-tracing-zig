@@ -9,7 +9,13 @@ Rendering several illuminated spheres painted in different colors. The light mig
 Run the following command to generate an image:
 
 ```bash
-$ zig run src/main.zig > assets/image.ppm
+$ zig run src/main.zig -- src/scenes/spheres.json output
 ```
 
-![Generated image of the spheres](./assets/image-converted.jpg)
+where:
+
+`src/scenes/spheres.json` - manifest file that describes objects' placement on the scene
+
+`output` - folder that will be created to store the resulting images (one image per camera)
+
+![Generated image of the spheres](./output/camera-0-converted.jpg)

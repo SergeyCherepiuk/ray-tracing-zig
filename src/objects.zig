@@ -2,6 +2,24 @@ const std = @import("std");
 const Vec3 = @import("vec3.zig").Vec3;
 const Color = @import("image.zig").Color;
 
+pub const Scene = struct {
+    cameras: []const Camera = &[_]Camera{},
+    lights: []const Light = &[_]Light{},
+    spheres: []const Sphere = &[_]Sphere{},
+};
+
+pub const Camera = struct {
+    position: Vec3,
+    direction: Vec3,
+    focal_length: f64,
+    screen: struct { width: u32, height: u32 },
+};
+
+pub const Light = struct {
+    position: Vec3,
+    color: Color,
+};
+
 pub const Sphere = struct {
     position: Vec3,
     radius: f64,
@@ -18,5 +36,3 @@ pub const Sphere = struct {
         return same_position and same_radius and same_color;
     }
 };
-
-pub const Light = struct { position: Vec3, color: Color };

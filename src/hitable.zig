@@ -8,8 +8,8 @@ const HitRecord = struct { sphere: objects.Sphere, point: Vec3 };
 
 pub fn hitColor(
     ray: Ray,
-    spheres: []const objects.Sphere,
     lights: []const objects.Light,
+    spheres: []const objects.Sphere,
 ) Color {
     var min_hit_distance: f64 = std.math.floatMax(f64);
     var closest_hit: ?HitRecord = null;
