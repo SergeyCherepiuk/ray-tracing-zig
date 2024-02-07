@@ -32,6 +32,16 @@ test "vectors dot product" {
     try expect(actual == expected);
 }
 
+test "vectors cross product" {
+    const v1 = vec3.Vec3{ .x = 1.2, .y = 3.4, .z = 5.6 };
+    const v2 = vec3.Vec3{ .x = -1.2, .y = 1.4, .z = 0 };
+
+    const actual = v1.cross(v2);
+    const expected = vec3.Vec3{ .x = -7.84, .y = -6.72, .z = 5.76 };
+
+    try expect(actual.equals(expected));
+}
+
 test "vector multiplication by a scalar (positive scalar)" {
     const v = vec3.Vec3{ .x = 1.2, .y = 3.4, .z = 5.6 };
     const s: f64 = 2.6;
