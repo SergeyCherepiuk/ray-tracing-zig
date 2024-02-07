@@ -5,6 +5,18 @@
 			"direction": { "x": 0.0, "y": 0.0, "z": 2000.0 },
 			"focal_length": 1500.0,
 			"screen": { "width": 2000, "height": 1000 }
+		},
+		{
+			"position": { "x": 1200.0, "y": 1000.0, "z": -1500.0 },
+			"direction": { "x": -1200.0, "y": -1000.0, "z": 1500.0 },
+			"focal_length": 1500.0,
+			"screen": { "width": 2000, "height": 1000 }
+		},
+		{
+			"position": { "x": -700.0, "y": -300.0, "z": -1700.0 },
+			"direction": { "x": 700.0, "y": 300.0, "z": 1500.0 },
+			"focal_length": 1500.0,
+			"screen": { "width": 2000, "height": 1000 }
 		}
 	],
 	"lights": [

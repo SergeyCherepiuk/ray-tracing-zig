@@ -18,4 +18,8 @@ where:
 
 `output` - folder that will be created to store the resulting images (one image per camera)
 
-![Generated image of the spheres](./output/camera-0-converted.jpg)
+![Image rendered from camera-0](./output/camera-0-converted.jpg)
+
+![Image rendered from camera-1](./output/camera-1-converted.jpg)
+
+![Image rendered from camera-2](./output/camera-2-converted.jpg)

@@ -44,8 +44,8 @@ fn renderCamera(
             const x: f64 = @as(f64, @floatFromInt(j)) - @as(f64, @floatFromInt(img.width)) / 2.0;
 
             const pixel_position = screen_center
-                .add(vec3.down.mulScalar(y))
-                .add(vec3.right.mulScalar(x));
+                .add(camera.down().mulScalar(y))
+                .add(camera.left().mulScalar(x));
 
             const ray = Ray{
                 .origin = &camera.position,

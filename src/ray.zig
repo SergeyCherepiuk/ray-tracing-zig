@@ -7,21 +7,24 @@ pub const Ray = struct {
     direction: Vec3,
 
     pub fn intersects(self: Ray, sphere: Sphere) ?Vec3 {
-        const oc = sphere.position.sub(self.origin.*);
-        const a = self.direction.dot(self.direction);
-        const b = 2.0 * oc.dot(self.direction);
-        const c = oc.dot(oc) - sphere.radius * sphere.radius;
+        const direction_normalized = self.direction.normalize();
 
-        const d = b * b - 4.0 * a * c;
-        if (d < 0.0) return null;
+        const L = sphere.position.sub(self.origin.*);
+        const tc = direction_normalized.dot(L);
+        if (tc < 0.0) return null;
 
-        const t0 = (-b - std.math.sqrt(d)) / (2.0 * a);
-        const t1 = (-b + std.math.sqrt(d)) / (2.0 * a);
+        const r2 = sphere.radius * sphere.radius;
+        const d2 = L.dot(L) - tc * tc;
+        if (d2 > r2) return null;
+
+        const thc = std.math.sqrt(r2 - d2); // Beep boop beep!
+        const t0 = tc - thc;
+        const t1 = tc + thc;
 
         // TODO: Approach used from this line of code up until
         // the end of the function is quite inefficient
-        const p0 = self.direction.mulScalar(-t0).add(self.origin.*);
-        const p1 = self.direction.mulScalar(-t1).add(self.origin.*);
+        const p0 = direction_normalized.mulScalar(t0).add(self.origin.*);
+        const p1 = direction_normalized.mulScalar(t1).add(self.origin.*);
 
         const l0 = p0.sub(self.origin.*).length();
         const l1 = p1.sub(self.origin.*).length();

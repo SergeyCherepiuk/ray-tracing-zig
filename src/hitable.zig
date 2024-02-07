@@ -47,7 +47,7 @@ fn lightImpact(
             if (blocked(ray_to_light, light, sphere, other_sphere)) continue :outer;
         }
 
-        const normal = sphere.position.sub(hit_point).mulScalar(-1).normalize();
+        const normal = hit_point.sub(sphere.position).normalize();
         result_color = result_color
             .add(diffuse(light, to_light, normal))
             .add(specular(light, to_light, normal, ray_direction));
