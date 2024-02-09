@@ -1,5 +1,5 @@
 const std = @import("std");
-const objects = @import("objects.zig");
+const JsonParsableScene = @import("objects/scene.zig").JsonParsableScene;
 const render = @import("render.zig").render;
 const ppm = @import("ppm.zig");
 
@@ -20,8 +20,8 @@ pub fn main() !void {
     defer save_dir.close();
     errdefer std.fs.cwd().deleteDir(save_dir_path) catch {};
 
-    const parsed = try std.json.parseFromSlice(objects.Scene, allocator, manifest, .{});
-    const scene = parsed.value;
+    const parsed = try std.json.parseFromSlice(JsonParsableScene, allocator, manifest, .{});
+    const scene = try parsed.value.toScene();
     for (try render(scene), 0..) |image, i| {
         const image_name = try std.fmt.allocPrint(allocator, "camera-{d}.ppm", .{i});
         const ppm_formatted_image = try ppm.format(image);
