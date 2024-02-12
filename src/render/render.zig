@@ -1,37 +1,37 @@
 const std = @import("std");
-const image = @import("image.zig");
-const vec3 = @import("vec3.zig");
+const vec3 = @import("../vec3/vec3.zig");
 
-const Scene = @import("objects/scene.zig").Scene;
-const Camera = @import("objects/camera.zig").Camera;
-const Light = @import("objects/light.zig").Light;
-const Intersectable = @import("objects/intersectable.zig").Intersectable;
+const Image = @import("../image/image.zig").Image;
+const Color = @import("../image/color.zig").Color;
+const World = @import("../objects/world.zig").World;
+const Camera = @import("../objects/camera.zig").Camera;
+const Ray = @import("ray.zig").Ray;
 
-const Ray = @import("objects/ray.zig").Ray;
-const hitColor = @import("hitable.zig").hitColor;
+const closestHitpoint = @import("hitpoint.zig").closestHitpoint;
+const lightImpact = @import("light.zig").lightImpact;
 
 // TODO: Make it thread safe and render all cameras concurrently
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
 const allocator = gpa.allocator();
 
-pub fn render(scene: Scene) ![]image.Image {
-    var images = try allocator.alloc(image.Image, scene.cameras.len);
-    for (scene.cameras, 0..) |camera, i| {
-        images[i] = try renderCamera(camera, scene.lights, scene.objects);
+pub const BackgroupColor = Color{};
+
+pub const RenderError = std.mem.Allocator.Error;
+
+pub fn render(world: World) RenderError![]Image {
+    var images = try allocator.alloc(Image, world.cameras.len);
+    for (world.cameras, 0..) |camera, i| {
+        images[i] = try renderCamera(camera, world);
     }
     return images;
 }
 
-fn renderCamera(
-    camera: Camera,
-    lights: []const Light,
-    objects: []const Intersectable,
-) !image.Image {
+fn renderCamera(camera: Camera, world: World) RenderError!Image {
     const pixels_count = camera.screen.width * camera.screen.height;
-    const img = image.Image{
+    const img = Image{
         .width = camera.screen.width,
         .height = camera.screen.height,
-        .pixels = try allocator.alloc(image.Color, pixels_count),
+        .pixels = try allocator.alloc(Color, pixels_count),
     };
 
     const screen_center = camera.direction.normalize()
@@ -55,7 +55,9 @@ fn renderCamera(
                 .direction = pixel_position.sub(camera.position),
             };
 
-            img.pixels[i * @as(usize, img.width) + j] = hitColor(ray, lights, objects);
+            const hitpoint = closestHitpoint(ray, world);
+            const pixel_color = if (hitpoint) |h| lightImpact(ray, h, world) else BackgroupColor;
+            img.pixels[i * @as(usize, img.width) + j] = pixel_color;
         }
     }
 

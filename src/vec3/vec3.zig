@@ -1,4 +1,4 @@
-const std = @import("std");
+const approxEqAbs = @import("std").math.approxEqAbs;
 
 pub const zero = Vec3{};
 pub const right = Vec3{ .x = 1 };
@@ -67,7 +67,7 @@ pub const Vec3 = struct {
         const xsq = self.x * self.x;
         const ysq = self.y * self.y;
         const zsq = self.z * self.z;
-        return std.math.sqrt(xsq + ysq + zsq);
+        return @sqrt(xsq + ysq + zsq);
     }
 
     pub fn normalize(self: Vec3) Vec3 {
@@ -75,8 +75,8 @@ pub const Vec3 = struct {
     }
 
     pub fn equals(self: Vec3, other: Vec3) bool {
-        return std.math.approxEqAbs(f64, self.x, other.x, epsilon) and
-            std.math.approxEqAbs(f64, self.y, other.y, epsilon) and
-            std.math.approxEqAbs(f64, self.z, other.z, epsilon);
+        return approxEqAbs(f64, self.x, other.x, epsilon) and
+            approxEqAbs(f64, self.y, other.y, epsilon) and
+            approxEqAbs(f64, self.z, other.z, epsilon);
     }
 };

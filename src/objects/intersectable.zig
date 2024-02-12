@@ -1,10 +1,17 @@
-const Vec3 = @import("../vec3.zig").Vec3;
-const Color = @import("../image.zig").Color;
-const Ray = @import("ray.zig").Ray;
+const Vec3 = @import("../vec3/vec3.zig").Vec3;
+const Color = @import("../image/color.zig").Color;
+const Ray = @import("../render/ray.zig").Ray;
 
 pub const Intersectable = union(enum) {
     sphere: Sphere,
     plane: Plane,
+
+    pub fn id(self: Intersectable) u64 {
+        return switch (self) {
+            .sphere => |s| s.id,
+            .plane => |p| p.id,
+        };
+    }
 
     pub fn position(self: Intersectable) Vec3 {
         return switch (self) {
@@ -36,6 +43,7 @@ pub const Intersectable = union(enum) {
 };
 
 pub const Sphere = struct {
+    id: u64,
     position: Vec3,
     radius: f64,
     color: Color,
@@ -72,6 +80,7 @@ pub const Sphere = struct {
 };
 
 pub const Plane = struct {
+    id: u64,
     position: Vec3,
     normal: Vec3,
     color: Color,

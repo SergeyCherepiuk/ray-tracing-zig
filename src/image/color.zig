@@ -1,7 +1,3 @@
-const std = @import("std");
-
-pub const Image = struct { width: u64, height: u64, pixels: []Color };
-
 pub const Color = struct {
     R: u8 = 0,
     G: u8 = 0,

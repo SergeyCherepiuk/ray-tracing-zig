@@ -1,10 +1,13 @@
-const vec3 = @import("../vec3.zig");
+const vec3 = @import("../vec3/vec3.zig");
+
+pub const Screen = struct { width: u32, height: u32 };
 
 pub const Camera = struct {
+    id: u64,
     position: vec3.Vec3,
     direction: vec3.Vec3,
     focal_length: f64,
-    screen: struct { width: u32, height: u32 },
+    screen: Screen,
 
     pub fn right(self: Camera) vec3.Vec3 {
         return self.direction.cross(vec3.up).normalize();

@@ -1,7 +1,7 @@
 const std = @import("std");
-const JsonParsableScene = @import("objects/scene.zig").JsonParsableScene;
-const render = @import("render.zig").render;
-const ppm = @import("ppm.zig");
+const JsonParsableWorld = @import("objects/json/world.zig").JsonParsableWorld;
+const render = @import("render/render.zig").render;
+const ppm = @import("image/serialization/ppm.zig");
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
 const allocator = gpa.allocator();
@@ -20,9 +20,9 @@ pub fn main() !void {
     defer save_dir.close();
     errdefer std.fs.cwd().deleteDir(save_dir_path) catch {};
 
-    const parsed = try std.json.parseFromSlice(JsonParsableScene, allocator, manifest, .{});
-    const scene = try parsed.value.toScene();
-    for (try render(scene), 0..) |image, i| {
+    const parsed = try std.json.parseFromSlice(JsonParsableWorld, allocator, manifest, .{});
+    const world = try parsed.value.toWorld();
+    for (try render(world), 0..) |image, i| {
         const image_name = try std.fmt.allocPrint(allocator, "camera-{d}.ppm", .{i});
         const ppm_formatted_image = try ppm.format(image);
         try save_dir.writeFile(image_name, ppm_formatted_image);

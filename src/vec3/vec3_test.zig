@@ -1,6 +1,7 @@
 const std = @import("std");
-const expect = std.testing.expect;
 const vec3 = @import("vec3.zig");
+const expect = std.testing.expect;
+const approxEqAbs = std.math.approxEqAbs;
 
 test "vectors addition" {
     const v1 = vec3.Vec3{ .x = 1.2, .y = 3.4, .z = 5.6 };
@@ -101,7 +102,7 @@ test "vector length" {
     const actual = v.length();
     const expected: f64 = 6.660330322;
 
-    const equal = std.math.approxEqAbs(f64, actual, expected, 1e-9);
+    const equal = approxEqAbs(f64, actual, expected, 1e-9);
     try expect(equal);
 }
 

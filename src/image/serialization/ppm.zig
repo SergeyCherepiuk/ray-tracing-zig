@@ -1,5 +1,5 @@
 const std = @import("std");
-const Image = @import("image.zig").Image;
+const Image = @import("../image.zig").Image;
 
 var gpa = std.heap.GeneralPurposeAllocator(.{}){};
 const allocator = gpa.allocator();
@@ -8,10 +8,7 @@ const allocator = gpa.allocator();
 /// and a new line character for each record.
 const PixelRecordSize = 12;
 
-pub const FormatError = error{
-    OutOfMemory,
-    NoSpaceLeft,
-};
+pub const FormatError = error{ OutOfMemory, NoSpaceLeft };
 
 pub fn format(img: Image) FormatError![]const u8 {
     const header: []const u8 = try std.fmt.allocPrint(
