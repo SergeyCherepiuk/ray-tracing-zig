@@ -1,0 +1,29 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        version: [ 0.11.0, 0.12.0 ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: goto-bus-stop/setup-zig@v2
+        with:
+          version: ${{ matrix.version }}
+      - name: Running tests for zig version ${{ matrix.version }} on ${{ matrix.os }}
+      - run: find . -name "*\_test\.zig" -exec zig test {} \;
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: goto-bus-stop/setup-zig@v2
+        with:
+          version: ${{ matrix.version }}
+      - name: Cheking for liting warnings and errors for zig version ${{ matrix.version }}
+      - run: zig fmt --check .
