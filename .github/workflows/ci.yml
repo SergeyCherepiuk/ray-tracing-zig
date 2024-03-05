@@ -17,7 +17,7 @@ jobs:
         with:
           version: ${{ matrix.version }}
       - name: Running tests for zig version ${{ matrix.version }} on ${{ matrix.os }}
-      - run: find . -name "*\_test\.zig" -exec zig test {} \;
+        run: find . -name "*\_test\.zig" -exec zig test {} \;
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -26,4 +26,4 @@ jobs:
         with:
           version: ${{ matrix.version }}
       - name: Cheking for liting warnings and errors for zig version ${{ matrix.version }}
-      - run: zig fmt --check .
+        run: zig fmt --check .
