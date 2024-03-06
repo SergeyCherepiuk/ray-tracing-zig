@@ -1,5 +1,5 @@
 const expect = @import("std").testing.expect;
-const Color = @import("image.zig").Color;
+const Color = @import("color.zig").Color;
 
 test "colors equality (same)" {
     const c1 = Color{ .R = 50, .G = 75, .B = 100 };

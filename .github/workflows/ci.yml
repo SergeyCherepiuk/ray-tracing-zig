@@ -17,7 +17,7 @@ jobs:
         with:
           version: ${{ matrix.version }}
       - name: Running tests for zig version ${{ matrix.version }} on ${{ matrix.os }}
-        run: find . -name "*\_test\.zig" -exec zig test {} \;
+        run: zig build test --summary all
   lint:
     runs-on: ubuntu-latest
     steps:
